@@ -167,6 +167,7 @@ BraintreeDropIn.propTypes = {
   paypalCredit: PropTypes.object,
   paymentOptionPriority: PropTypes.array,
   card: PropTypes.object,
+  vaultManager: PropTypes.boolean,
   submitButtonText: PropTypes.string,
   className: PropTypes.string,
   renderSubmitButton: PropTypes.func,
