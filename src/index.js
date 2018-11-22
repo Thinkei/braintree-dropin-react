@@ -53,52 +53,51 @@ class BraintreeDropIn extends React.Component {
   };
 
   setup = () => {
-    this.props.braintree.create(
-      {
-        authorization: this.props.authorizationToken,
-        container: '.braintree-dropin-react-form',
-        locale: this.props.locale,
-        paypal: this.props.paypal,
-        paypalCredit: this.props.paypalCredit,
-        paymentOptionPriority: this.props.paymentOptionPriority,
-        card: this.props.card,
-        vaultManager: this.props.vaultManager,
-      },
-      (err, dropinInstance) => {
-        if (err) {
-          if (this.props.onError) {
-            this.props.onError(err);
-          }
-          return;
-        } else {
-          if (this.props.onCreate) {
-            this.props.onCreate(dropinInstance);
-          }
+    const options = {
+      locale: this.props.locale,
+      paypal: this.props.paypal,
+      paypalCredit: this.props.paypalCredit,
+      paymentOptionPriority: this.props.paymentOptionPriority,
+      card: this.props.card,
+      ...this.props.options,
+      authorization: this.props.authorizationToken,
+      container: '.braintree-dropin-react-form',
+      vaultManager: this.props.vaultManager,
+    };
+    this.props.braintree.create(options, (err, dropinInstance) => {
+      if (err) {
+        if (this.props.onError) {
+          this.props.onError(err);
         }
-
-        if (dropinInstance.isPaymentMethodRequestable()) {
-          this.setState({
-            isSubmitButtonDisabled: false,
-          });
+        return;
+      } else {
+        if (this.props.onCreate) {
+          this.props.onCreate(dropinInstance);
         }
+      }
 
-        dropinInstance.on('paymentMethodRequestable', event => {
-          this.setState({
-            isSubmitButtonDisabled: false,
-          });
-        });
-
-        dropinInstance.on('noPaymentMethodRequestable', () => {
-          this.setState({
-            isSubmitButtonDisabled: true,
-          });
-        });
-
+      if (dropinInstance.isPaymentMethodRequestable()) {
         this.setState({
-          dropInInstance: dropinInstance,
+          isSubmitButtonDisabled: false,
         });
-      },
-    );
+      }
+
+      dropinInstance.on('paymentMethodRequestable', event => {
+        this.setState({
+          isSubmitButtonDisabled: false,
+        });
+      });
+
+      dropinInstance.on('noPaymentMethodRequestable', () => {
+        this.setState({
+          isSubmitButtonDisabled: true,
+        });
+      });
+
+      this.setState({
+        dropInInstance: dropinInstance,
+      });
+    });
   };
 
   tearDown = () => {
@@ -121,7 +120,7 @@ class BraintreeDropIn extends React.Component {
 
   handleSubmit = event => {
     if (this.state.dropInInstance && !this.state.isSubmitButtonDisabled) {
-      this.setState({isSubmitButtonDisabled: true}, () => {
+      this.setState({ isSubmitButtonDisabled: true }, () => {
         this.state.dropInInstance.requestPaymentMethod((err, payload) => {
           this.setState({
             isSubmitButtonDisabled: false,
@@ -156,6 +155,7 @@ class BraintreeDropIn extends React.Component {
 
 BraintreeDropIn.propTypes = {
   braintree: PropTypes.object.isRequired,
+  options: PropTypes.object,
   authorizationToken: PropTypes.string.isRequired,
   handlePaymentMethod: PropTypes.func.isRequired,
   onCreate: PropTypes.func,
@@ -173,7 +173,7 @@ BraintreeDropIn.propTypes = {
   renderSubmitButton: PropTypes.func,
 };
 
-const renderSubmitButton = ({onClick, isDisabled, text}) => {
+const renderSubmitButton = ({ onClick, isDisabled, text }) => {
   return (
     <button onClick={onClick} disabled={isDisabled}>
       {text}
