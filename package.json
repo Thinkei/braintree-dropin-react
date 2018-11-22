@@ -1,6 +1,6 @@
 {
   "name": "@ehrocks/braintree-dropin-react",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React Drop-in Payment UI Component",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,8 @@
     "test": "./node_modules/jest/bin/jest.js",
     "update-test": "npm run test -- -u",
     "clean": "rm -rf dist",
-    "build":
-      "npm run clean && mkdir dist && ./node_modules/babel-cli/bin/babel.js ./src/index.js --out-file ./dist/index.js",
-    "example":
-      "./node_modules/webpack/bin/webpack.js && ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "build": "npm run clean && mkdir dist && ./node_modules/babel-cli/bin/babel.js ./src/index.js --out-file ./dist/index.js",
+    "example": "./node_modules/webpack/bin/webpack.js && ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "repository": {
     "type": "git",
