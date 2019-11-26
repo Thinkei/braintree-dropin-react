@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   context: __dirname,
@@ -6,26 +6,27 @@ module.exports = {
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/example'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   devServer: {
     publicPath: '/example/',
-    contentBase: './example'
+    contentBase: './example',
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
   },
   stats: {
     colors: true,
     reasons: true,
-    chunks: true
+    chunks: true,
   },
+  externals: ['react', 'react-dom', 'prop-types'],
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader'
-      }
-    ]
-  }
-}
+        loader: 'babel-loader',
+      },
+    ],
+  },
+};

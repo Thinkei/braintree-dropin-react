@@ -1,6 +1,6 @@
 {
   "name": "@ehrocks/braintree-dropin-react",
-  "version": "0.1.2",
+  "version": "0.1.2-alpha.1",
   "description": "React Drop-in Payment UI Component",
   "main": "index.js",
   "scripts": {
